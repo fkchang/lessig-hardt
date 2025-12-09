@@ -295,11 +295,11 @@ tell application "Keynote"
 			
 			-- For big fact slides
 			else if slideType of aSlide is "bigfact" then
-				set object text of default title item to slideTitle of aSlide
-				set color of object text of default title item to textColor
+				set object text of default body item to slideTitle of aSlide
+				set color of object text of default body item to textColor
 				if slideBody of aSlide is not "" then
-					set object text of default body item to slideBody of aSlide
-					set color of object text of default body item to textColor
+					set object text of default title item to slideBody of aSlide
+					set color of object text of default title item to textColor
 				end if
 			end if
 		end tell
