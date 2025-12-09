@@ -16,15 +16,26 @@ Slides are separated when a new `TITLE:` line is encountered.
 
 ## Properties and Default Values
 
+### Basic Properties
+
 | Property | Description | Options | Default | Status |
 |----------|-------------|---------|---------|--------|
 | `TITLE:` | The text for the slide | Any text | *(required)* | ✅ Implemented |
 | `COLOR:` | The color of the text | blue, red, green, black, gray, white | black | ✅ Implemented |
 | `SIZE:` | The font size | small, medium, large, xlarge | medium | ✅ Implemented |
 | `BULLETS:` | Switches to bullet list slide | followed by `- ` lines | *(none)* | ✅ Implemented |
+| `TRANS:` | Transition effect | dissolve, move, wipe, push, fade | none | ✅ Compiled .scpt |
 | `BG:` | The background color | white, black, gray, blue, green, red | white | ❌ Keynote limitation |
 | `POS:` | Text position (Statement slides only) | center, top, bottom | center | ❌ Keynote limitation |
-| `TRANS:` | Transition effect | dissolve, move, wipe, push, fade | none | ❌ Keynote limitation |
+
+### Slide Type Keywords
+
+| Keyword | Creates | Additional Properties | Status |
+|---------|---------|----------------------|--------|
+| `SECTION:` | Section slide | `SUBTITLE:` for subtitle | ✅ Implemented |
+| `AGENDA:` | Agenda slide | `- ` lines for items | ✅ Implemented |
+| `QUOTE:` | Quote slide | `ATTRIBUTION:` for author | ✅ Implemented |
+| `BIGFACT:` | Big Fact slide | `FACTTEXT:` for explanation | ✅ Implemented |
 
 ## Slide Types
 
@@ -102,6 +113,32 @@ BULLETS:
 - Review the proposal
 - Gather team input
 - Schedule kickoff meeting
+```
+
+### Section Slide Example
+```
+SECTION: Part 1
+SUBTITLE: Introduction and Background
+```
+
+### Agenda Slide Example
+```
+AGENDA: Today's Topics
+- Project overview
+- Technical deep dive
+- Q&A session
+```
+
+### Quote Slide Example
+```
+QUOTE: Stay hungry, stay foolish.
+ATTRIBUTION: — Steve Jobs
+```
+
+### Big Fact Slide Example
+```
+BIGFACT: 10x
+FACTTEXT: Faster development with AI assistance
 ```
 
 ### Using Background Colors ❌ (Keynote AppleScript Limitation)

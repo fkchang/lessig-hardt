@@ -8,7 +8,7 @@ set slideContent to read theFile as Çclass utf8È
 
 -- Parse the slide data
 set slideList to {}
-set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none"}
+set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:""}
 set slideLines to paragraphs of slideContent
 set collectingBullets to false
 
@@ -19,7 +19,7 @@ repeat with i from 1 to count of slideLines
 		-- If we already have title data and find a new title, save the previous slide
 		if slideTitle of currentSlide is not "" then
 			copy currentSlide to end of slideList
-			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none"}
+			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:""}
 		end if
 		
 		-- Extract the title text
@@ -57,6 +57,56 @@ repeat with i from 1 to count of slideLines
 		set collectingBullets to false
 
 
+	else if currentLine starts with "SECTION: " then
+		-- Save previous slide if exists
+		if slideTitle of currentSlide is not "" then
+			copy currentSlide to end of slideList
+			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:""}
+		end if
+		set slideTitle of currentSlide to text 10 thru end of currentLine
+		set slideType of currentSlide to "section"
+		set collectingBullets to false
+	
+	else if currentLine starts with "SUBTITLE: " then
+		set slideBody of currentSlide to text 11 thru end of currentLine
+		set collectingBullets to false
+	
+	else if currentLine starts with "AGENDA: " then
+		if slideTitle of currentSlide is not "" then
+			copy currentSlide to end of slideList
+			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:""}
+		end if
+		set slideTitle of currentSlide to text 9 thru end of currentLine
+		set slideType of currentSlide to "agenda"
+		set collectingBullets to true
+	
+	else if currentLine starts with "QUOTE: " then
+		if slideTitle of currentSlide is not "" then
+			copy currentSlide to end of slideList
+			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:""}
+		end if
+		set slideBody of currentSlide to text 8 thru end of currentLine
+		set slideType of currentSlide to "quote"
+		set collectingBullets to false
+	
+	else if currentLine starts with "ATTRIBUTION: " then
+		set slideTitle of currentSlide to text 14 thru end of currentLine
+		set collectingBullets to false
+	
+	else if currentLine starts with "BIGFACT: " then
+		if slideTitle of currentSlide is not "" then
+			copy currentSlide to end of slideList
+			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:""}
+		end if
+		set slideTitle of currentSlide to text 10 thru end of currentLine
+		set slideType of currentSlide to "bigfact"
+		set collectingBullets to false
+	
+	else if currentLine starts with "FACTTEXT: " then
+		set slideBody of currentSlide to text 11 thru end of currentLine
+		set collectingBullets to false
+
+
 	else if currentLine starts with "BULLETS:" then
 		-- Mark this as a bullet slide
 		set slideType of currentSlide to "bullets"
@@ -84,12 +134,24 @@ tell application "Keynote"
 	-- Find the master slides we need
 	set statementMaster to missing value
 	set titleBulletsMaster to missing value
+	set sectionMaster to missing value
+	set agendaMaster to missing value
+	set quoteMaster to missing value
+	set bigFactMaster to missing value
 	
 	repeat with m in slide layouts of newDoc
 		if name of m is "Statement" then
 			set statementMaster to m
 		else if name of m is "Title & Bullets" then
 			set titleBulletsMaster to m
+		else if name of m is "Section" then
+			set sectionMaster to m
+		else if name of m is "Agenda" then
+			set agendaMaster to m
+		else if name of m is "Quote" then
+			set quoteMaster to m
+		else if name of m is "Big Fact" then
+			set bigFactMaster to m
 		end if
 	end repeat
 	
@@ -104,6 +166,14 @@ tell application "Keynote"
 		if slideType of aSlide is "statement" and statementMaster is not missing value then
 			set newSlide to make new slide with properties {base layout:statementMaster} at end of slides of newDoc
 		else if slideType of aSlide is "bullets" and titleBulletsMaster is not missing value then
+		else if slideType of aSlide is "section" and sectionMaster is not missing value then
+			set newSlide to make new slide with properties {base layout:sectionMaster} at end of slides of newDoc
+		else if slideType of aSlide is "agenda" and agendaMaster is not missing value then
+			set newSlide to make new slide with properties {base layout:agendaMaster} at end of slides of newDoc
+		else if slideType of aSlide is "quote" and quoteMaster is not missing value then
+			set newSlide to make new slide with properties {base layout:quoteMaster} at end of slides of newDoc
+		else if slideType of aSlide is "bigfact" and bigFactMaster is not missing value then
+			set newSlide to make new slide with properties {base layout:bigFactMaster} at end of slides of newDoc
 			set newSlide to make new slide with properties {base layout:titleBulletsMaster} at end of slides of newDoc
 		else
 			-- Fallback to default slide
@@ -138,6 +208,23 @@ tell application "Keynote"
 			set fontSize to 120
 		end if
 		
+		-- Set transition effect
+		if slideTrans of aSlide is not "none" then
+			tell newSlide
+				if slideTrans of aSlide is "dissolve" then
+					set its transition properties to {transition effect:dissolve, transition duration:1.0}
+				else if slideTrans of aSlide is "move" then
+					set its transition properties to {transition effect:magic move, transition duration:1.0}
+				else if slideTrans of aSlide is "wipe" then
+					set its transition properties to {transition effect:wipe, transition duration:1.0}
+				else if slideTrans of aSlide is "push" then
+					set its transition properties to {transition effect:push, transition duration:1.0}
+				else if slideTrans of aSlide is "fade" then
+					set its transition properties to {transition effect:fade through color, transition duration:1.0}
+				end if
+			end tell
+		end if
+
 		-- Set text content and formatting
 		tell newSlide
 			-- For statement slides (or fallback)
@@ -172,6 +259,48 @@ tell application "Keynote"
 				set object text of default body item to bulletText
 				set color of object text of default body item to textColor
 				log "Applied textColor to body"
+			
+			-- For section slides
+			else if slideType of aSlide is "section" then
+				set object text of default title item to slideTitle of aSlide
+				set color of object text of default title item to textColor
+				if slideBody of aSlide is not "" then
+					set object text of default body item to slideBody of aSlide
+					set color of object text of default body item to textColor
+				end if
+			
+			-- For agenda slides
+			else if slideType of aSlide is "agenda" then
+				set object text of default title item to slideTitle of aSlide
+				set color of object text of default title item to textColor
+				-- Build agenda items from bullet points
+				set agendaText to ""
+				repeat with agendaItem in bulletPoints of aSlide
+					set agendaText to agendaText & agendaItem & return
+				end repeat
+				if length of agendaText > 0 then
+					set agendaText to text 1 thru ((length of agendaText) - 1) of agendaText
+				end if
+				set object text of default body item to agendaText
+				set color of object text of default body item to textColor
+			
+			-- For quote slides
+			else if slideType of aSlide is "quote" then
+				set object text of default body item to slideBody of aSlide
+				set color of object text of default body item to textColor
+				if slideTitle of aSlide is not "" then
+					set object text of default title item to slideTitle of aSlide
+					set color of object text of default title item to textColor
+				end if
+			
+			-- For big fact slides
+			else if slideType of aSlide is "bigfact" then
+				set object text of default title item to slideTitle of aSlide
+				set color of object text of default title item to textColor
+				if slideBody of aSlide is not "" then
+					set object text of default body item to slideBody of aSlide
+					set color of object text of default body item to textColor
+				end if
 			end if
 		end tell
 	end repeat
