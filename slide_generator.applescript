@@ -1,4 +1,4 @@
--- Smart Mucker Presentation Generator - Extended Version
+-- Lessig-Hardt Slide Generator
 -- This script converts a simple text file into a Keynote presentation
 -- Supports both Statement slides and Title & Bullets slides
 

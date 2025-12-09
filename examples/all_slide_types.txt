@@ -1,0 +1,40 @@
+SECTION: Introduction
+SUBTITLE: Getting started with the slide generator
+
+AGENDA: What We'll Cover
+- Statement slides
+- Bullet slides
+- Special slide types
+- Formatting options
+
+TITLE: Statement Slides
+COLOR: blue
+SIZE: large
+
+TITLE: are the foundation
+SIZE: medium
+
+TITLE: of Lessig-style presentations
+SIZE: small
+
+QUOTE: Simplicity is the ultimate sophistication.
+ATTRIBUTION: — Leonardo da Vinci
+
+BIGFACT: 6
+FACTTEXT: Different slide types supported
+
+TITLE: Colors available
+BULLETS:
+- blue - for emphasis
+- red - for warnings
+- green - for positive messages
+- black - default
+- gray - for subtle text
+- white - for dark backgrounds
+
+SECTION: Conclusion
+SUBTITLE: Start creating impactful presentations
+
+TITLE: Thank You
+COLOR: green
+SIZE: xlarge

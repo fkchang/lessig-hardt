@@ -6,10 +6,18 @@ AppleScript-based tool that generates Keynote presentations from a simple text D
 
 ## Working Features
 
-- `TITLE:` - slide text (required)
+### Basic Properties
+- `TITLE:` - slide text (required for statement slides)
 - `COLOR:` - text color (blue, red, green, black, gray, white)
 - `SIZE:` - font size (small/40pt, medium/60pt, large/80pt, xlarge/120pt)
 - `BULLETS:` - switches to Title & Bullets slide layout
+- `TRANS:` - transitions (dissolve, move, wipe, push, fade) - requires compiled .scpt
+
+### Slide Type Keywords
+- `SECTION:` + `SUBTITLE:` - Section header slides
+- `AGENDA:` + `- items` - Agenda slides
+- `QUOTE:` + `ATTRIBUTION:` - Quote slides
+- `BIGFACT:` + `FACTTEXT:` - Big fact/statistic slides
 
 ## Keynote AppleScript Limitations Discovered
 
@@ -19,7 +27,7 @@ These features are **parsed by the DSL** but **cannot be applied** due to Keynot
 |---------|------------|
 | `BG:` (background color) | `background color` property is **read-only** on slides and shapes |
 | `POS:` (text position) | `vertical alignment` property not accessible via AppleScript |
-| `TRANS:` (transitions) | Multi-word enums like `magic move` only work in compiled `.scpt` format |
+| `TRANS:` (transitions) | Works in compiled `.scpt` format (now included) |
 
 ## Technique: Exploring AppleScript Capabilities
 
@@ -119,7 +127,17 @@ LC_ALL=C sed -i '' 's/old/new/' script.applescript
 ## File Structure
 
 ```
-slide_generator.applescript  - Main generator script
+slide_generator.scpt        - Run this (compiled AppleScript)
+slide_generator.applescript - Source code (editable)
 text_format_dsl.md          - DSL documentation for users
 CLAUDE.md                   - This file (for LLMs)
+README.md                   - GitHub readme
+examples/                   - Sample slide files
+```
+
+## Rebuilding
+
+After editing `slide_generator.applescript`, recompile:
+```bash
+osacompile -o slide_generator.scpt slide_generator.applescript
 ```

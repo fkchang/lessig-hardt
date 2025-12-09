@@ -1,0 +1,12 @@
+TITLE: AI
+COLOR: blue
+SIZE: xlarge
+
+TITLE: won't take your job
+
+TITLE: someone using AI
+COLOR: red
+
+TITLE: will
+COLOR: red
+SIZE: xlarge

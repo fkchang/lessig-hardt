@@ -188,7 +188,7 @@ TRANS: fade
 
 4. **Create visual rhythm**:
    - Group similar concepts with consistent formatting
-   - Use your refrain ("The Smart Mucker way to excel and endure") as a reset point with consistent formatting
+   - Use a recurring phrase or theme as a reset point with consistent formatting
 
 5. **Keep it minimal**:
    - Embrace the default values when possible

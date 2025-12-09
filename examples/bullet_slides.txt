@@ -1,0 +1,17 @@
+TITLE: Three Key Principles
+COLOR: blue
+BULLETS:
+- Keep it simple
+- Move fast
+- Learn from feedback
+
+TITLE: Implementation Steps
+BULLETS:
+- Define the problem
+- Build a prototype
+- Test with real users
+- Iterate based on feedback
+
+TITLE: Questions?
+COLOR: green
+SIZE: xlarge

@@ -1,0 +1,18 @@
+TITLE: Transitions
+COLOR: blue
+SIZE: xlarge
+TRANS: fade
+
+TITLE: add polish
+TRANS: dissolve
+
+TITLE: to your presentation
+TRANS: wipe
+
+TITLE: Use sparingly
+COLOR: red
+TRANS: push
+
+TITLE: for best effect
+COLOR: green
+TRANS: move
