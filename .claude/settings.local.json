@@ -9,7 +9,9 @@
       "Bash(git checkout:*)",
       "Bash(LC_ALL=C sed:*)",
       "Bash(osascript:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(git rm:*)"
     ]
   }
 }

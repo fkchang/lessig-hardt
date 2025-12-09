@@ -166,6 +166,7 @@ tell application "Keynote"
 		if slideType of aSlide is "statement" and statementMaster is not missing value then
 			set newSlide to make new slide with properties {base layout:statementMaster} at end of slides of newDoc
 		else if slideType of aSlide is "bullets" and titleBulletsMaster is not missing value then
+			set newSlide to make new slide with properties {base layout:titleBulletsMaster} at end of slides of newDoc
 		else if slideType of aSlide is "section" and sectionMaster is not missing value then
 			set newSlide to make new slide with properties {base layout:sectionMaster} at end of slides of newDoc
 		else if slideType of aSlide is "agenda" and agendaMaster is not missing value then
@@ -174,7 +175,6 @@ tell application "Keynote"
 			set newSlide to make new slide with properties {base layout:quoteMaster} at end of slides of newDoc
 		else if slideType of aSlide is "bigfact" and bigFactMaster is not missing value then
 			set newSlide to make new slide with properties {base layout:bigFactMaster} at end of slides of newDoc
-			set newSlide to make new slide with properties {base layout:titleBulletsMaster} at end of slides of newDoc
 		else
 			-- Fallback to default slide
 			set newSlide to make new slide at end of slides of newDoc
