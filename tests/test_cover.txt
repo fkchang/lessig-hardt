@@ -1,0 +1,10 @@
+COVER: Lessig-Hardt Slide Generator
+SUBTITLE: Creating Beautiful Presentations
+AUTHOR: Forrest Chang
+
+TITLE: First Content Slide
+COLOR: blue
+SIZE: large
+
+BIGFACT: 10x
+FACTTEXT: Faster than manual slide creation

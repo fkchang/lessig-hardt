@@ -1,0 +1,2 @@
+BIGFACT: 3x
+FACTTEXT: Potential revenue scaling through automation

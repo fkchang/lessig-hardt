@@ -32,12 +32,24 @@ Slides are separated when a new `TITLE:` line is encountered.
 
 | Keyword | Creates | Additional Properties | Status |
 |---------|---------|----------------------|--------|
+| `COVER:` | Title/Cover slide | `SUBTITLE:`, `AUTHOR:` | ✅ Implemented |
 | `SECTION:` | Section slide | `SUBTITLE:` for subtitle | ✅ Implemented |
 | `AGENDA:` | Agenda slide | `- ` lines for items | ✅ Implemented |
 | `QUOTE:` | Quote slide | `ATTRIBUTION:` for author | ✅ Implemented |
 | `BIGFACT:` | Big Fact slide | `FACTTEXT:` for explanation | ✅ Implemented |
 
 ## Slide Types
+
+### Cover/Title Slides
+Cover slides use Keynote's Title slide layout and should be the first slide in your presentation. They fill in the default title page that Keynote creates.
+
+```
+COVER: My Presentation Title
+SUBTITLE: A Compelling Subtitle
+AUTHOR: Your Name
+```
+
+**Note:** COVER must be the first slide in your file to properly use the default Keynote title slide.
 
 ### Statement Slides (Default)
 Statement slides display a single centered text block. This is the default when you only use `TITLE:`.
@@ -85,6 +97,13 @@ BULLETS:
 - Red text - Warnings or alerts
 
 ## Examples
+
+### Cover Slide Example
+```
+COVER: The Future of AI
+SUBTITLE: How Automation Changes Everything
+AUTHOR: Forrest Chang
+```
 
 ### Minimal Example
 ```

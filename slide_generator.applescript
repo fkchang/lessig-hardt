@@ -8,7 +8,7 @@ set slideContent to read theFile as Çclass utf8È
 
 -- Parse the slide data
 set slideList to {}
-set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:""}
+set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:"", slideAuthor:""}
 set slideLines to paragraphs of slideContent
 set collectingBullets to false
 
@@ -19,7 +19,7 @@ repeat with i from 1 to count of slideLines
 		-- If we already have title data and find a new title, save the previous slide
 		if slideTitle of currentSlide is not "" then
 			copy currentSlide to end of slideList
-			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:""}
+			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:"", slideAuthor:""}
 		end if
 		
 		-- Extract the title text
@@ -61,7 +61,7 @@ repeat with i from 1 to count of slideLines
 		-- Save previous slide if exists
 		if slideTitle of currentSlide is not "" then
 			copy currentSlide to end of slideList
-			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:""}
+			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:"", slideAuthor:""}
 		end if
 		set slideTitle of currentSlide to text 10 thru end of currentLine
 		set slideType of currentSlide to "section"
@@ -74,7 +74,7 @@ repeat with i from 1 to count of slideLines
 	else if currentLine starts with "AGENDA: " then
 		if slideTitle of currentSlide is not "" then
 			copy currentSlide to end of slideList
-			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:""}
+			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:"", slideAuthor:""}
 		end if
 		set slideTitle of currentSlide to text 9 thru end of currentLine
 		set slideType of currentSlide to "agenda"
@@ -83,7 +83,7 @@ repeat with i from 1 to count of slideLines
 	else if currentLine starts with "QUOTE: " then
 		if slideTitle of currentSlide is not "" then
 			copy currentSlide to end of slideList
-			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:""}
+			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:"", slideAuthor:""}
 		end if
 		set slideBody of currentSlide to text 8 thru end of currentLine
 		set slideType of currentSlide to "quote"
@@ -96,7 +96,7 @@ repeat with i from 1 to count of slideLines
 	else if currentLine starts with "BIGFACT: " then
 		if slideTitle of currentSlide is not "" then
 			copy currentSlide to end of slideList
-			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:""}
+			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:"", slideAuthor:""}
 		end if
 		set slideTitle of currentSlide to text 10 thru end of currentLine
 		set slideType of currentSlide to "bigfact"
@@ -106,6 +106,18 @@ repeat with i from 1 to count of slideLines
 		set slideBody of currentSlide to text 11 thru end of currentLine
 		set collectingBullets to false
 
+	else if currentLine starts with "COVER: " then
+		if slideTitle of currentSlide is not "" or slideBody of currentSlide is not "" then
+			copy currentSlide to end of slideList
+			set currentSlide to {slideTitle:"", slideColor:"black", slideSize:"medium", slideType:"statement", bulletPoints:{}, slideBG:"white", slidePos:"center", slideTrans:"none", slideBody:"", slideAuthor:""}
+		end if
+		set slideTitle of currentSlide to text 8 thru end of currentLine
+		set slideType of currentSlide to "cover"
+		set collectingBullets to false
+
+	else if currentLine starts with "AUTHOR: " then
+		set slideAuthor of currentSlide to text 9 thru end of currentLine
+		set collectingBullets to false
 
 	else if currentLine starts with "BULLETS:" then
 		-- Mark this as a bullet slide
@@ -155,15 +167,28 @@ tell application "Keynote"
 		end if
 	end repeat
 	
-	-- Delete the default first slide
-	try
-		delete slide 1 of newDoc
-	end try
+	-- Check if first slide is a cover slide
+	set hasCover to false
+	if (count of slideList) > 0 then
+		if slideType of item 1 of slideList is "cover" then
+			set hasCover to true
+		end if
+	end if
+	
+	-- Delete the default first slide only if no cover
+	if not hasCover then
+		try
+			delete slide 1 of newDoc
+		end try
+	end if
 	
 	-- Process each slide
 	repeat with aSlide in slideList
 		-- Create a new slide with appropriate master
-		if slideType of aSlide is "statement" and statementMaster is not missing value then
+		if slideType of aSlide is "cover" then
+			-- Use the existing first slide for cover
+			set newSlide to slide 1 of newDoc
+		else if slideType of aSlide is "statement" and statementMaster is not missing value then
 			set newSlide to make new slide with properties {base layout:statementMaster} at end of slides of newDoc
 		else if slideType of aSlide is "bullets" and titleBulletsMaster is not missing value then
 			set newSlide to make new slide with properties {base layout:titleBulletsMaster} at end of slides of newDoc
@@ -295,11 +320,26 @@ tell application "Keynote"
 			
 			-- For big fact slides
 			else if slideType of aSlide is "bigfact" then
-				set object text of default body item to slideTitle of aSlide
-				set color of object text of default body item to textColor
+				-- Big Fact: text item 4 is big number, text item 2 is explanation
+				set object text of text item 4 to slideTitle of aSlide
+				set color of object text of text item 4 to textColor
 				if slideBody of aSlide is not "" then
-					set object text of default title item to slideBody of aSlide
-					set color of object text of default title item to textColor
+					set object text of text item 2 to slideBody of aSlide
+					set color of object text of text item 2 to textColor
+				end if
+			
+			-- For cover slides
+			else if slideType of aSlide is "cover" then
+				-- Cover: text item 4 = title, text item 5 = subtitle, text item 1 = author
+				set object text of text item 4 to slideTitle of aSlide
+				set color of object text of text item 4 to textColor
+				if slideBody of aSlide is not "" then
+					set object text of text item 5 to slideBody of aSlide
+					set color of object text of text item 5 to textColor
+				end if
+				if slideAuthor of aSlide is not "" then
+					set object text of text item 1 to slideAuthor of aSlide
+					set color of object text of text item 1 to textColor
 				end if
 			end if
 		end tell
