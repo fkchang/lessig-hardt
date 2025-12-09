@@ -1,6 +1,7 @@
 # Rakefile for Lessig-Hardt Slide Generator
 
 require 'fileutils'
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), 'lib'))
 
 SCRIPT_DIR = File.dirname(__FILE__)
 TEST_DIR = File.join(SCRIPT_DIR, 'tests')
@@ -28,6 +29,17 @@ def run_generator(test_file)
   system("osascript #{SCRIPT_DIR}/slide_generator_cli.scpt '#{test_file}' > /dev/null 2>&1")
 end
 
+# Verify PDF against expectations in test file
+def verify_pdf(test_file, pdf_path)
+  require 'pdf_assertions'
+
+  expectations = PDFAssertions.parse_expectations(test_file)
+  return { passed: true, errors: [], has_expectations: false } if expectations.empty?
+
+  errors = PDFAssertions.verify(pdf_path, expectations)
+  { passed: errors.empty?, errors: errors, has_expectations: true }
+end
+
 desc "Run all tests (default)"
 task :default => :test
 
@@ -47,6 +59,7 @@ task :test do
 
   passed = 0
   failed = 0
+  failure_details = []
 
   test_files.each do |test_file|
     test_name = File.basename(test_file, '.txt')
@@ -58,17 +71,37 @@ task :test do
     export_and_close_keynote(output_pdf)
 
     if File.exist?(output_pdf)
-      puts "✓"
-      passed += 1
+      result = verify_pdf(test_file, output_pdf)
+      if result[:passed]
+        if result[:has_expectations]
+          puts "✓ (verified)"
+        else
+          puts "✓ (no assertions)"
+        end
+        passed += 1
+      else
+        puts "✗ (assertions failed)"
+        failed += 1
+        failure_details << { name: test_name, errors: result[:errors] }
+      end
     else
-      puts "✗"
+      puts "✗ (no PDF generated)"
       failed += 1
+      failure_details << { name: test_name, errors: ["Failed to generate PDF"] }
     end
   end
 
   puts "=" * 40
   puts "Passed: #{passed}, Failed: #{failed}"
   puts "Output PDFs: #{OUTPUT_DIR}"
+
+  if failure_details.any?
+    puts "\nFailure Details:"
+    failure_details.each do |failure|
+      puts "\n  #{failure[:name]}:"
+      failure[:errors].each { |e| puts "    - #{e}" }
+    end
+  end
 
   exit(failed > 0 ? 1 : 0)
 end
@@ -94,7 +127,17 @@ task :test_one, [:name] do |t, args|
   export_and_close_keynote(output_pdf)
 
   if File.exist?(output_pdf)
-    puts "Generated: #{output_pdf}"
+    result = verify_pdf(test_file, output_pdf)
+    if result[:has_expectations]
+      if result[:passed]
+        puts "✓ All assertions passed"
+      else
+        puts "✗ Assertions failed:"
+        result[:errors].each { |e| puts "  - #{e}" }
+      end
+    else
+      puts "Generated: #{output_pdf} (no assertions defined)"
+    end
     system("open '#{output_pdf}'")
   else
     puts "Failed to generate PDF"

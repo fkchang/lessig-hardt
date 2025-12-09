@@ -1,2 +1,9 @@
+# Test: Big Fact slide type
+# Note: Without COVER, there's a blank first page (Keynote default Title slide)
+#EXPECT: pages=2
+#EXPECT: page=1 not_contains="3x"
+#EXPECT: page=2 contains="3x"
+#EXPECT: page=2 contains="Potential revenue scaling through automation"
+
 BIGFACT: 3x
 FACTTEXT: Potential revenue scaling through automation
