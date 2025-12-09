@@ -22,9 +22,9 @@ Slides are separated when a new `TITLE:` line is encountered.
 | `COLOR:` | The color of the text | blue, red, green, black, gray, white | black | ✅ Implemented |
 | `SIZE:` | The font size | small, medium, large, xlarge | medium | ✅ Implemented |
 | `BULLETS:` | Switches to bullet list slide | followed by `- ` lines | *(none)* | ✅ Implemented |
-| `BG:` | The background color | white, black, gray, blue, green | white | ⚠️ Not yet implemented |
-| `POS:` | Text position | center, top, bottom | center | ⚠️ Not yet implemented |
-| `TRANS:` | Transition effect | dissolve, move, wipe | dissolve | ⚠️ Not yet implemented |
+| `BG:` | The background color | white, black, gray, blue, green, red | white | ✅ Implemented |
+| `POS:` | Text position (Statement slides only) | center, top, bottom | center | ✅ Implemented |
+| `TRANS:` | Transition effect | dissolve, move, wipe, push, fade | none | ✅ Implemented |
 
 ## Slide Types
 
@@ -104,14 +104,14 @@ BULLETS:
 - Schedule kickoff meeting
 ```
 
-### Using Background Colors ⚠️ (Not Yet Implemented)
+### Using Background Colors
 ```
 TITLE: Key Warning
 COLOR: white
 BG: red
 ```
 
-### Positioning Content ⚠️ (Not Yet Implemented)
+### Positioning Content
 ```
 TITLE: Bottom Text
 POS: bottom
@@ -120,10 +120,13 @@ TITLE: Top Header
 POS: top
 ```
 
-### Setting Transitions ⚠️ (Not Yet Implemented)
+### Setting Transitions
 ```
 TITLE: Dramatic Reveal
 TRANS: wipe
+
+TITLE: Smooth Fade
+TRANS: fade
 ```
 
 ## Tips for Lessig/Hardt Style
@@ -138,9 +141,9 @@ TRANS: wipe
    - Use `COLOR: green` for solutions or positive statements
    - Use `COLOR: blue` for key concepts or section titles
 
-3. **Background contrast** ⚠️ (Not yet implemented):
+3. **Background contrast**:
    - Switch to `BG: black` for dramatic statements
-   - When using dark backgrounds, text automatically becomes white
+   - When using dark backgrounds, remember to set `COLOR: white` for visibility
 
 4. **Create visual rhythm**:
    - Group similar concepts with consistent formatting
