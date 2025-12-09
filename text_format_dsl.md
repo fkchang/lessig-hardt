@@ -27,6 +27,7 @@ Slides are separated when a new `TITLE:` line is encountered.
 | `TRANS:` | Transition effect | dissolve, move, wipe, push, fade | none | ✅ Compiled .scpt |
 | `BG:` | The background color | white, black, gray, blue, green, red | white | ❌ Keynote limitation |
 | `POS:` | Text position (Statement slides only) | center, top, bottom | center | ❌ Keynote limitation |
+| `BUILD:` | Build animation for bullets | appear, none | none | ❌ Keynote limitation |
 
 ### Slide Type Keywords
 
@@ -187,6 +188,16 @@ TITLE: Smooth Fade
 TRANS: fade
 ```
 **Note:** Transition effects require compiled AppleScript format for multi-word enumeration constants.
+
+### Build Animations for Bullets ❌ (Keynote AppleScript Limitation)
+```
+TITLE: My Points
+BULLETS:
+BUILD: appear
+- First point appears on click
+- Second point appears on click
+```
+**Note:** Keynote's AppleScript interface does not expose build/animation properties. Builds must be added manually in Keynote after slide generation.
 
 ## Tips for Lessig/Hardt Style
 
