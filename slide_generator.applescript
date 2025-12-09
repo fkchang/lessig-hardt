@@ -4,7 +4,7 @@
 
 -- User selects the text file containing slide content
 set theFile to choose file with prompt "Select the text file containing your slides content:"
-set slideContent to read theFile as ï¿½class utf8ï¿½
+set slideContent to read theFile as Çclass utf8È
 
 -- Parse the slide data
 set slideList to {}
@@ -43,29 +43,30 @@ repeat with i from 1 to count of slideLines
 		set bgName to text 5 thru end of currentLine
 		set slideBG of currentSlide to bgName
 		set collectingBullets to false
-
+	
 	else if currentLine starts with "POS: " then
 		-- Extract text position
 		set posName to text 6 thru end of currentLine
 		set slidePos of currentSlide to posName
 		set collectingBullets to false
-
+	
 	else if currentLine starts with "TRANS: " then
 		-- Extract transition effect
 		set transName to text 8 thru end of currentLine
 		set slideTrans of currentSlide to transName
 		set collectingBullets to false
 
+
 	else if currentLine starts with "BULLETS:" then
 		-- Mark this as a bullet slide
 		set slideType of currentSlide to "bullets"
 		set collectingBullets to true
-
+		
 	else if collectingBullets and currentLine starts with "- " then
 		-- Add bullet point (remove the "- " prefix)
 		set bulletText to text 3 thru end of currentLine
 		copy bulletText to end of bulletPoints of currentSlide
-
+		
 	end if
 end repeat
 
@@ -134,66 +135,18 @@ tell application "Keynote"
 		else if slideSize of aSlide is "xlarge" then
 			set fontSize to 120
 		end if
-
-		-- Convert background color name to RGB
-		set bgColor to {65535, 65535, 65535} -- Default: white
-
-		if slideBG of aSlide is "black" then
-			set bgColor to {0, 0, 0}
-		else if slideBG of aSlide is "gray" then
-			set bgColor to {32768, 32768, 32768}
-		else if slideBG of aSlide is "blue" then
-			set bgColor to {0, 0, 65535}
-		else if slideBG of aSlide is "green" then
-			set bgColor to {0, 32768, 0}
-		else if slideBG of aSlide is "red" then
-			set bgColor to {65535, 0, 0}
-		end if
-
-		-- Set background color
-		tell newSlide
-			set its background fill type to color fill
-			set its background color to bgColor
-		end tell
-
-		-- Set transition effect
-		if slideTrans of aSlide is not "none" then
-			tell newSlide
-				if slideTrans of aSlide is "dissolve" then
-					set its transition properties to {transition effect:dissolve, transition duration:1.0}
-				else if slideTrans of aSlide is "move" then
-					set its transition properties to {transition effect:move in, transition duration:1.0}
-				else if slideTrans of aSlide is "wipe" then
-					set its transition properties to {transition effect:wipe, transition duration:1.0}
-				else if slideTrans of aSlide is "push" then
-					set its transition properties to {transition effect:push, transition duration:1.0}
-				else if slideTrans of aSlide is "fade" then
-					set its transition properties to {transition effect:fade, transition duration:1.0}
-				end if
-			end tell
-		end if
-
+		
 		-- Set text content and formatting
 		tell newSlide
 			-- For statement slides (or fallback)
 			if slideType of aSlide is "statement" then
 				-- Make sure body is showing
 				set body showing to true
-
+				
 				-- Set the text content and properties
 				set object text of default body item to slideTitle of aSlide
 				set color of object text of default body item to textColor
 				set size of object text of default body item to fontSize
-
-				-- Set text position (vertical alignment)
-				if slidePos of aSlide is "top" then
-					set vertical alignment of default body item to top
-				else if slidePos of aSlide is "bottom" then
-					set vertical alignment of default body item to bottom
-				else
-					-- center is the default
-					set vertical alignment of default body item to center
-				end if
 				
 				-- For bullet slides
 			else if slideType of aSlide is "bullets" then
