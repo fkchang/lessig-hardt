@@ -43,20 +43,20 @@ repeat with i from 1 to count of slideLines
 		set bgName to text 5 thru end of currentLine
 		set slideBG of currentSlide to bgName
 		set collectingBullets to false
-	
+		
 	else if currentLine starts with "POS: " then
 		-- Extract text position
 		set posName to text 6 thru end of currentLine
 		set slidePos of currentSlide to posName
 		set collectingBullets to false
-	
+		
 	else if currentLine starts with "TRANS: " then
 		-- Extract transition effect
 		set transName to text 8 thru end of currentLine
 		set slideTrans of currentSlide to transName
 		set collectingBullets to false
-
-
+		
+		
 	else if currentLine starts with "BULLETS:" then
 		-- Mark this as a bullet slide
 		set slideType of currentSlide to "bullets"
@@ -111,9 +111,7 @@ tell application "Keynote"
 		end if
 		
 		-- Convert color name to RGB
-		log "Processing slide: " & slideTitle of aSlide & " with color: " & slideColor of aSlide
 		set textColor to {0, 0, 0} -- Default: black
-		log "Default textColor set to black"
 		
 		if slideColor of aSlide is "blue" then
 			set textColor to {0, 0, 65535} -- Deep blue
@@ -148,7 +146,6 @@ tell application "Keynote"
 				-- Set the text content and properties
 				set object text of default body item to slideTitle of aSlide
 				set color of object text of default body item to textColor
-				log "Applied textColor to body"
 				set size of object text of default body item to fontSize
 				
 				-- For bullet slides
@@ -171,10 +168,9 @@ tell application "Keynote"
 				-- Set the bullet points and properties
 				set object text of default body item to bulletText
 				set color of object text of default body item to textColor
-				log "Applied textColor to body"
 			end if
 		end tell
 	end repeat
 end tell
 
-display dialog "Created " & (count of slideList) & " slides. Check Script Editor log for details." buttons {"OK"} default button "OK"
+display dialog "Presentation created successfully!" buttons {"OK"} default button "OK"

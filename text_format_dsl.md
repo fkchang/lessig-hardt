@@ -22,9 +22,9 @@ Slides are separated when a new `TITLE:` line is encountered.
 | `COLOR:` | The color of the text | blue, red, green, black, gray, white | black | ✅ Implemented |
 | `SIZE:` | The font size | small, medium, large, xlarge | medium | ✅ Implemented |
 | `BULLETS:` | Switches to bullet list slide | followed by `- ` lines | *(none)* | ✅ Implemented |
-| `BG:` | The background color | white, black, gray, blue, green, red | white | ✅ Implemented |
-| `POS:` | Text position (Statement slides only) | center, top, bottom | center | ✅ Implemented |
-| `TRANS:` | Transition effect | dissolve, move, wipe, push, fade | none | ✅ Implemented |
+| `BG:` | The background color | white, black, gray, blue, green, red | white | ❌ Keynote limitation |
+| `POS:` | Text position (Statement slides only) | center, top, bottom | center | ❌ Keynote limitation |
+| `TRANS:` | Transition effect | dissolve, move, wipe, push, fade | none | ❌ Keynote limitation |
 
 ## Slide Types
 
@@ -104,14 +104,15 @@ BULLETS:
 - Schedule kickoff meeting
 ```
 
-### Using Background Colors
+### Using Background Colors ❌ (Keynote AppleScript Limitation)
 ```
 TITLE: Key Warning
 COLOR: white
 BG: red
 ```
+**Note:** Keynote's AppleScript interface does not allow setting slide background colors programmatically. Background color must be set manually or by using a theme with the desired backgrounds.
 
-### Positioning Content
+### Positioning Content ❌ (Keynote AppleScript Limitation)
 ```
 TITLE: Bottom Text
 POS: bottom
@@ -119,8 +120,9 @@ POS: bottom
 TITLE: Top Header
 POS: top
 ```
+**Note:** Vertical text positioning requires Keynote properties not accessible via AppleScript.
 
-### Setting Transitions
+### Setting Transitions ❌ (Keynote AppleScript Limitation)
 ```
 TITLE: Dramatic Reveal
 TRANS: wipe
@@ -128,6 +130,7 @@ TRANS: wipe
 TITLE: Smooth Fade
 TRANS: fade
 ```
+**Note:** Transition effects require compiled AppleScript format for multi-word enumeration constants.
 
 ## Tips for Lessig/Hardt Style
 
@@ -141,9 +144,10 @@ TRANS: fade
    - Use `COLOR: green` for solutions or positive statements
    - Use `COLOR: blue` for key concepts or section titles
 
-3. **Background contrast**:
-   - Switch to `BG: black` for dramatic statements
-   - When using dark backgrounds, remember to set `COLOR: white` for visibility
+3. **Background contrast** (manual step required):
+   - Keynote's AppleScript doesn't support setting backgrounds
+   - After generating slides, manually change backgrounds in Keynote for dark slides
+   - Or use a Keynote theme that has dark slide masters built-in
 
 4. **Create visual rhythm**:
    - Group similar concepts with consistent formatting
