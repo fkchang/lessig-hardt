@@ -175,7 +175,28 @@ Now go make something that moves people.
 
 ---
 
-*Inspired by Lawrence Lessig's presentation style and Dick Hardt's unforgettable "Identity 2.0" talk.*
+## The Backstory
+
+I've been using this presentation style since the mid-2000s, after seeing Dick Hardt's Identity 2.0 talk blow my mind at OSCON. The style is *incredibly* effective—but it was also incredibly tedious to create.
+
+Each presentation meant hours in Keynote: click, type a word, adjust font size, set color, duplicate slide, repeat. For a 15-minute talk? That's 100+ slides. By hand. Every. Single. Time.
+
+I tried org-reveal (Emacs org-mode to reveal.js)—great for quick slide decks, but it couldn't capture the Lessig/Hardt aesthetic. The typography was wrong. The rhythm was off. It felt like a compromise.
+
+So I kept doing it manually. For years.
+
+Then came LLMs.
+
+Suddenly I realized: if I had a simple DSL, I could describe my presentation in plain text and let Claude or GPT help me draft the content. Instead of fighting with Keynote, I could focus on the *message*. The AI could help with the *words*.
+
+This tool is the result. A simple text format that:
+- Lets me sketch a talk in minutes
+- Works beautifully with LLMs for brainstorming
+- Compiles to real Keynote presentations with one command
+
+What used to take hours now takes minutes. The constraint-based style that made these presentations powerful is now also what makes them fast to create.
+
+*— Forrest Chang*
 
 ## License
 
