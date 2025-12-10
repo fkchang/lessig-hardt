@@ -138,7 +138,7 @@ task :test_one, [:name] do |t, args|
     else
       puts "Generated: #{output_pdf} (no assertions defined)"
     end
-    system("open '#{output_pdf}'")
+    puts "PDF: #{output_pdf}"
   else
     puts "Failed to generate PDF"
   end

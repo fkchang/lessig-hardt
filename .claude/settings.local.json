@@ -11,7 +11,20 @@
       "Bash(osascript:*)",
       "Bash(ls:*)",
       "Bash(grep:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(open:*)",
+      "Bash(chmod:*)",
+      "Bash(/Users/fkchang/Documents/work/lessig_hardt_slides/test_runner.sh:*)",
+      "Bash(rake test_one:*)",
+      "Bash(git restore:*)",
+      "Bash(rake test:*)",
+      "Bash(rake compile:*)",
+      "Bash(sdef:*)",
+      "Bash(plutil:*)",
+      "Bash(pdftotext:*)",
+      "Bash(python3:*)",
+      "Bash(gem list:*)",
+      "Bash(ruby -rpdf-reader -e:*)"
     ]
   }
 }

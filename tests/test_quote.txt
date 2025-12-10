@@ -1,0 +1,11 @@
+# Test: Quote slide with attribution
+# Note: Without COVER, there's a blank first page (Keynote default Title slide)
+#EXPECT: pages=2
+#EXPECT: page=1 not_contains="The Nucleus"
+#EXPECT: page=2 contains="The Nucleus of the company"
+#EXPECT: page=2 contains="Keith McCullough"
+
+QUOTE: The Nucleus of the company
+ATTRIBUTION: Keith McCullough
+COLOR: blue
+SIZE: xlarge

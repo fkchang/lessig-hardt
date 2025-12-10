@@ -279,11 +279,12 @@ on createKeynoteSlides(slideList)
                     set color of object text of default body item to textColor
 
                 else if slideType of aSlide is "quote" then
-                    set object text of default body item to slideBody of aSlide
-                    set color of object text of default body item to textColor
+                    -- Quote layout: text item 4 = quote text, text item 1 = attribution
+                    set object text of text item 4 to slideBody of aSlide
+                    set color of object text of text item 4 to textColor
                     if slideTitle of aSlide is not "" then
-                        set object text of default title item to slideTitle of aSlide
-                        set color of object text of default title item to textColor
+                        set object text of text item 1 to slideTitle of aSlide
+                        set color of object text of text item 1 to textColor
                     end if
 
                 else if slideType of aSlide is "bigfact" then
