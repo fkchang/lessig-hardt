@@ -1,0 +1,15 @@
+# Test: Bullet slides with title and list
+#EXPECT: pages=2
+#EXPECT: page=2 contains="Three Key Points"
+#EXPECT: page=2 contains="First important thing"
+#EXPECT: page=2 contains="Second crucial item"
+#EXPECT: page=2 contains="Third vital point"
+
+COVER: Bullets Test
+
+TITLE: Three Key Points
+COLOR: blue
+BULLETS:
+- First important thing
+- Second crucial item
+- Third vital point

@@ -1,0 +1,19 @@
+# Test: Statement slides (the core Lessig style)
+#EXPECT: pages=4
+#EXPECT: page=2 contains="Simple"
+#EXPECT: page=3 contains="Powerful"
+#EXPECT: page=4 contains="Fast"
+
+COVER: Statement Test
+SUBTITLE: Core slide type
+
+TITLE: Simple
+COLOR: blue
+SIZE: xlarge
+
+TITLE: Powerful
+COLOR: red
+SIZE: large
+
+TITLE: Fast
+COLOR: green

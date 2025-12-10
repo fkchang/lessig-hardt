@@ -1,0 +1,13 @@
+# Test: Agenda slides with items
+#EXPECT: pages=2
+#EXPECT: page=2 contains="Today's Plan"
+#EXPECT: page=2 contains="Introduction"
+#EXPECT: page=2 contains="Deep Dive"
+#EXPECT: page=2 contains="Wrap Up"
+
+COVER: Agenda Test
+
+AGENDA: Today's Plan
+- Introduction
+- Deep Dive
+- Wrap Up

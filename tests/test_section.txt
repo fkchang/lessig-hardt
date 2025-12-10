@@ -1,0 +1,9 @@
+# Test: Section divider slides
+# Note: Basic theme Section layout only shows title, not subtitle
+#EXPECT: pages=2
+#EXPECT: page=2 contains="Part One"
+
+COVER: Section Test
+
+SECTION: Part One
+SUBTITLE: The Beginning
