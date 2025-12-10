@@ -1,0 +1,19 @@
+#!/bin/bash
+# Lessig-Hardt Slide Generator
+# Usage: lessig_hardt [slides.txt]
+#   With argument: Generate presentation from file
+#   Without argument: Open file picker dialog
+
+SCRIPT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+
+if [ -n "$1" ]; then
+    # CLI mode: file path provided
+    if [ ! -f "$1" ]; then
+        echo "Error: File not found: $1" >&2
+        exit 1
+    fi
+    osascript "$SCRIPT_DIR/slide_generator.scpt" "$1"
+else
+    # GUI mode: show file picker
+    osascript "$SCRIPT_DIR/slide_generator.scpt"
+fi

@@ -8,7 +8,7 @@ TEST_DIR = File.join(SCRIPT_DIR, 'tests')
 OUTPUT_DIR = File.join(SCRIPT_DIR, 'test_output')
 
 # AppleScript sources to compile (library must be first as others depend on it)
-APPLESCRIPT_SOURCES = ['slide_generator_lib', 'slide_generator', 'slide_generator_cli']
+APPLESCRIPT_SOURCES = ['slide_generator_lib', 'slide_generator']
 
 # Export current Keynote document to PDF and close it
 def export_and_close_keynote(output_pdf)
@@ -26,7 +26,7 @@ end
 
 # Run the slide generator on a test file
 def run_generator(test_file)
-  system("osascript #{SCRIPT_DIR}/slide_generator_cli.scpt '#{test_file}' > /dev/null 2>&1")
+  system("#{SCRIPT_DIR}/bin/lessig_hardt '#{test_file}' > /dev/null 2>&1")
 end
 
 # Verify PDF against expectations in test file
@@ -123,7 +123,7 @@ task :test_one, [:name] do |t, args|
 
   puts "Running test: #{test_name}"
 
-  system("osascript #{SCRIPT_DIR}/slide_generator_cli.scpt '#{test_file}'")
+  system("#{SCRIPT_DIR}/bin/lessig_hardt '#{test_file}'")
   export_and_close_keynote(output_pdf)
 
   if File.exist?(output_pdf)
@@ -174,5 +174,5 @@ task :generate, [:file] do |t, args|
   abort "File not found: #{file}" unless File.exist?(file)
 
   puts "Generating presentation from: #{file}"
-  system("osascript #{SCRIPT_DIR}/slide_generator_cli.scpt '#{file}'")
+  system("#{SCRIPT_DIR}/bin/lessig_hardt '#{file}'")
 end

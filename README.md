@@ -24,12 +24,15 @@ SIZE: xlarge
 ```
 
 2. Run the generator:
-   - **Option A:** Double-click `slide_generator.scpt` to open in Script Editor, then Run (⌘R)
-   - **Option B:** Run from terminal: `osascript slide_generator.scpt`
+```bash
+# With a file (CLI mode)
+bin/lessig_hardt slides.txt
 
-3. Select your text file when prompted
+# Without a file (opens file picker)
+bin/lessig_hardt
+```
 
-4. A new Keynote presentation opens with your slides
+3. A new Keynote presentation opens with your slides
 
 ## Slide Types
 
@@ -115,16 +118,20 @@ TRANS: move
 
 | File | Purpose |
 |------|---------|
-| `slide_generator.scpt` | Run this - compiled AppleScript |
-| `slide_generator.applescript` | Source code (editable) |
+| `bin/lessig_hardt` | Main entry point |
+| `slide_generator.scpt` | Compiled AppleScript (handles CLI and GUI) |
+| `slide_generator_lib.scpt` | Shared library |
 | `text_format_dsl.md` | Complete DSL reference |
 | `examples/` | Sample slide files |
+| `tests/` | Test files with assertions |
 
-## Rebuilding
+## Development
 
-After editing `slide_generator.applescript`, recompile:
 ```bash
-osacompile -o slide_generator.scpt slide_generator.applescript
+rake compile    # Recompile AppleScript sources
+rake test       # Run all tests with PDF assertions
+rake test_one[name]  # Run single test and open PDF
+rake clean      # Remove test output
 ```
 
 ## Known Limitations

@@ -7,16 +7,18 @@ AppleScript-based tool that generates Keynote presentations from a simple text D
 ## Architecture
 
 ```
+bin/lessig_hardt           - Main entry point (bash wrapper)
 slide_generator_lib.scpt   - Shared library (parsing + slide creation)
-slide_generator.scpt       - GUI version (file picker dialog)
-slide_generator_cli.scpt   - CLI version (accepts file path argument)
+slide_generator.scpt       - Unified script (handles CLI and GUI modes)
 *.applescript              - Source files (compile with rake compile)
 lib/pdf_assertions.rb      - PDF testing framework
 tests/*.txt                - Test files with #EXPECT assertions
 Rakefile                   - Build and test automation
 ```
 
-Both GUI and CLI load the shared library via `load script`, so changes only need to be made in one place.
+The unified script handles both modes:
+- With file argument: CLI mode, no dialogs
+- Without argument: GUI mode, file picker dialog
 
 ## Working Features
 
