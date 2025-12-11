@@ -82,10 +82,17 @@ setup_path() {
     local shell_rc=""
     local bin_path="$INSTALL_DIR/bin"
 
-    # Detect shell
+    # Detect shell config (macOS-specific)
+    # macOS uses login shells, so .bash_profile/.profile for bash, .zshrc for zsh
     case "$SHELL" in
         */zsh)  shell_rc="$HOME/.zshrc" ;;
-        */bash) shell_rc="$HOME/.bashrc" ;;
+        */bash)
+            if [[ -f "$HOME/.bash_profile" ]]; then
+                shell_rc="$HOME/.bash_profile"
+            else
+                shell_rc="$HOME/.profile"
+            fi
+            ;;
         *)      shell_rc="$HOME/.profile" ;;
     esac
 
