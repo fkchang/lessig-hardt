@@ -42,14 +42,36 @@ SIZE: xlarge
 
 Becomes a presentation that *pulses* with your message.
 
+## Installation
+
+### One-liner (recommended)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/fkchang/lessig-hardt/main/install.sh | bash
+```
+
+### Manual Installation
+
+```bash
+git clone https://github.com/fkchang/lessig-hardt.git
+cd lessig-hardt
+./install.sh
+```
+
+### Requirements
+
+- macOS (uses Keynote and AppleScript)
+- [Keynote](https://www.apple.com/keynote/) (free from App Store)
+- Xcode Command Line Tools (`xcode-select --install`)
+
 ## Quick Start
 
 ```bash
 # Generate from a file
-bin/lessig_hardt my_talk.txt
+lessig_hardt my_talk.txt
 
 # Or use the file picker
-bin/lessig_hardt
+lessig_hardt
 ```
 
 That's it. Your Keynote presentation appears, ready to captivate.
@@ -145,19 +167,54 @@ TRANS: fade      # Through black
 
 **Embrace the blank.** Pause between ideas. Let slides breathe. Silence is powerful.
 
-## Development
+## For Developers
+
+### Setup
 
 ```bash
-rake compile    # Rebuild AppleScript
-rake test       # Run all tests
-rake clean      # Clear test output
+git clone https://github.com/fkchang/lessig-hardt.git
+cd lessig-hardt
+
+# Install test dependencies
+gem install pdf-reader
+
+# Compile AppleScript sources
+rake compile
 ```
 
-## Requirements
+### Running Tests
 
-- macOS
-- Keynote
-- The courage to present differently
+```bash
+rake test              # Run all tests
+rake test_one[name]    # Run a single test (e.g., rake test_one[test_quote])
+rake clean             # Clear test output
+```
+
+Tests use a self-documenting format with `#EXPECT:` assertions:
+
+```
+# Test: Quote slide with attribution
+#EXPECT: pages=2
+#EXPECT: page=2 contains="The best way to predict"
+
+COVER: Test Presentation
+
+QUOTE: The best way to predict the future is to invent it.
+ATTRIBUTION: — Alan Kay
+```
+
+### Project Structure
+
+```
+├── bin/lessig_hardt                 # CLI entry point
+├── slide_generator.applescript      # Main script (CLI/GUI)
+├── slide_generator_lib.applescript  # Shared library
+├── lib/pdf_assertions.rb            # Test framework
+├── tests/                           # Test files with assertions
+├── examples/                        # Example presentations
+└── docs/                            # Additional documentation
+    └── dsl-reference.md             # Detailed DSL reference
+```
 
 ## The Secret
 

@@ -1,0 +1,26 @@
+# Compiled AppleScript
+*.scpt
+
+# Test output
+test_output/
+
+# Test artifacts
+tests/test_image.png
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+
+# Claude Code context (personal)
+CLAUDE.md
+.claude/

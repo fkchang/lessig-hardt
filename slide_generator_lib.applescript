@@ -306,6 +306,7 @@ on createKeynoteSlides(slideList)
                         set object text of text item 1 to slideAuthor of aSlide
                         set color of object text of text item 1 to textColor
                     end if
+
                 end if
             end tell
         end repeat
